@@ -1,26 +1,19 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
+
+" Plugins
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-
-" -----------------------------
-" IMPORTANT:
-" Keep Plugin commands between vundle#begin/end.
-
-" plugin on GitHub repo
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 let g:jsx_ext_required = 0
-
 Plugin 'elzr/vim-json'
-" Plugin 'minibufexpl.vim'
 Plugin 'SuperTab'
-" Plugin 'AutoComplPop'
 Plugin 'surround.vim'
 Plugin 'Markdown'
-Plugin 'kien/ctrlp.vim'
+" Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'dracula/vim', { 'name': 'dracula' }
 Plugin 'easymotion/vim-easymotion'
@@ -33,39 +26,40 @@ Plugin 'osyo-manga/vim-stripe'
 Plugin 'tomasr/molokai'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" plugin from http://vim-scripts.org/vim/scripts.html --- Plugin 'L9'
-" Git plugin not hosted on GitHub --- Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine --- Plugin 'file:///home/gmarik/path/to/plugin'
-" -----------------------------
+" Plugin 'AutoComplPop'
+" Plugin 'minibufexpl.vim'
+call vundle#end()
 
-call vundle#end()            " required
+" Plugs
 call plug#begin('~/.vim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 Plug 'navarasu/onedark.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
-let g:prettier#autoformat = 1
+
 
 filetype plugin indent on    " required
 filetype indent on
 syntax enable
-
 " ---- CUSTOM SETTINGS -------
 "let g:onedark_style = 'darker'
 colorscheme onedark 
+set smarttab
 "let g:lightline = {
 "  \ 'colorscheme': 'onedark',
 "  \ }
 
 " tagbar
 map <F6> :TagbarToggle <CR>
-
 map <F5> :NERDTreeToggle <CR>
-map <F4> :FZF <CR>
+map <c-p> :GFiles <CR>
 let g:NERDTreeWinSize=40
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
@@ -78,14 +72,14 @@ function! StartUp()
 endfunction
 autocmd VimEnter * call StartUp()
 
-map <c-p> :CtrlP <CR>
-let g:ctrlp_custom_ignore = 'coverage\|dist\|dist-*\|node_modules\|DS_Store\|git'
-" open ctrl p file in new buffer
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<c-v>', '<2-LeftMouse>'],
-    \ 'AcceptSelection("v")': ['<cr>', '<RightMouse>'],
-    \ }
+" map <c-p> :CtrlP <CR>
+"let g:ctrlp_custom_ignore = 'coverage\|dist\|dist-*\|node_modules\|DS_Store\|git'
+" "open ctrl p file in new buffer
+"let g:ctrlp_switch_buffer = 0
+"let g:ctrlp_prompt_mappings = {
+"   \ 'AcceptSelection("e")': ['<c-v>', '<2-LeftMouse>'],
+"    \ 'AcceptSelection("v")': ['<cr>', '<RightMouse>'],
+"    \ }
 
 set number
 set showcmd
@@ -100,16 +94,12 @@ nnoremap j gj
 nnoremap k gk
 " set paste
 set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-let g:prettier#config#tab_width = 2
 autocmd BufWritePre *.js %s/\s\+$//e
-let g:prettier#autoformat_require_pragma = 0
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
-
-" disable arrow keys
 
 " easy motion, case insensitive
 let g:EasyMotion_smartcase = 1
@@ -117,53 +107,57 @@ let g:EasyMotion_smartcase = 1
 " ctrl w + o makes it full screen
 nnoremap <silent> <C-w>w :ZoomWin<CR>
 
+
+"So I can move around in insert
+inoremap <C-k> <C-o>gk
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-j> <C-o>gj cnoremap <C-h> <Left>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-l> <Right>
+
+
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings for CoCList
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-eslint', 
+  \ 'coc-tsserver', 
+  \ 'coc-json', 
+  \ 'coc-prettier', 
+  \ ]
+
+
+" goto
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+ command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+
 " linting / auto format on save
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 highlight ALEErrorSign ctermbg=NONE ctermfg=red
 highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_linters = {
 \'javascript': ['flow', 'eslint'],
 \}
 let g:ale_fixers = {
 \'javascript': ['eslint'],
 \}
-
-"So I can move around in insert
-inoremap <C-k> <C-o>gk
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
-inoremap <C-j> <C-o>gj
-cnoremap <C-h> <Left>
-cnoremap <C-j> <Down>
-cnoremap <C-k> <Up>
-cnoremap <C-l> <Right>
-
-
-
-
-
-
-
-
-
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
