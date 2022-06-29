@@ -39,6 +39,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mattn/emmet-vim'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -50,11 +51,15 @@ filetype indent on
 syntax enable
 " ---- CUSTOM SETTINGS -------
 "let g:onedark_style = 'darker'
+let g:onedark_config = {
+    \ 'style': 'darker',
+\}
 colorscheme onedark 
+
 set smarttab
-"let g:lightline = {
-"  \ 'colorscheme': 'onedark',
-"  \ }
+let g:lightline = {
+  \ 'colorscheme': 'onedark',
+  \ }
 
 " tagbar
 map <F6> :TagbarToggle <CR>
@@ -89,6 +94,7 @@ set showmatch
 set hlsearch
 set incsearch
 set clipboard+=unnamedplus
+set mouse=a
 " move vertically by visual line:
 nnoremap j gj
 nnoremap k gk
@@ -147,7 +153,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
- command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+let g:prettier#config#single_quote = 'true'
 
 " linting / auto format on save
 let g:ale_sign_error = '✘'
@@ -161,3 +168,9 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \'javascript': ['eslint'],
 \}
+
+" Tailwind settings
+
+nmap gs <Plug>(GitGutterPreviewHunk)
+
+" Emmet
