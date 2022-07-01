@@ -1,5 +1,8 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible              " \e iMproved, required
+"filetype off                  " required
+filetype plugin on "for vimWiki
+syntax on
+
 set rtp+=~/.vim/bundle/Vundle.vim
 
 " Plugins
@@ -26,45 +29,55 @@ Plugin 'osyo-manga/vim-stripe'
 Plugin 'tomasr/molokai'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" Plugin 'AutoComplPop'
-" Plugin 'minibufexpl.vim'
 call vundle#end()
 
 " Plugs
 call plug#begin('~/.vim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
-Plug 'navarasu/onedark.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
-
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'vimwiki/vimwiki'
+
+Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
+Plug 'arcticicestudio/nord-vim'
+Plug 'navarasu/onedark.nvim'
+Plug 'romgrk/doom-one.vim'
+
+Plug 'sainnhe/sonokai'
+Plug 'mangeshrex/everblush.vim'
+Plug 'phanviet/vim-monokai-pro'
 call plug#end()
-
-
 filetype plugin indent on    " required
 filetype indent on
-syntax enable
-" ---- CUSTOM SETTINGS -------
-"let g:onedark_style = 'darker'
-let g:onedark_config = {
-    \ 'style': 'darker',
-\}
-colorscheme onedark 
+
+
+" Color Scheme
+"let g:onedark_config = {
+"    \ 'style': 'deep',
+"\}
+"
+        " Important!!
+if has('termguicolors')
+  set termguicolors
+endif
+"" The configuration options should be placed before `colorscheme sonokai`.
+let g:sonokai_style = 'default'
+let g:sonokai_better_performance = 1
+colorscheme sonokai
+"colorscheme everblush 
 
 set smarttab
-let g:lightline = {
-  \ 'colorscheme': 'onedark',
-  \ }
 
 " tagbar
 map <F6> :TagbarToggle <CR>
 map <F5> :NERDTreeToggle <CR>
-map <c-p> :GFiles <CR>
+map <c-p> :Files <CR>
 let g:NERDTreeWinSize=40
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
@@ -171,6 +184,4 @@ let g:ale_fixers = {
 
 " Tailwind settings
 
-nmap gs <Plug>(GitGutterPreviewHunk)
 
-" Emmet
